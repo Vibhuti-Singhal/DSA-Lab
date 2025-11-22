@@ -1,51 +1,44 @@
 #include <iostream>
 #include <queue>
 using namespace std;
-const int MAX = 100;
-void bfs(int graph[MAX][MAX], int n, int start) {
-    if (start < 0 || start >= n) {
-        cout << "Error: Invalid starting vertex!" << endl;
-        return;
-    }
-    bool visited[MAX] = {0}; // Track visited vertices
-    queue<int> q;
-    visited[start] = true;
-    q.push(start);
-    cout << "BFS Traversal starting from vertex " << start << ": ";
-    while (!q.empty()) {
+#define MAX 100 
+void bfs(int adj[][MAX], int visited[], int n, int start) {
+     queue<int> q;
+     visited[start] = 1;
+     q.push(start);
+     while (!q.empty()) { 
         int u = q.front();
         q.pop();
-        cout << u << " ";
-        for (int v = 0; v < n; v++) {
-            if (graph[u][v] == 1 && !visited[v]) {
-                visited[v] = true;
-                q.push(v);
-            }
+        cout << u << " "; 
+        for (int v = 0; v < n; v++) { 
+            if (adj[u][v] && !visited[v]) { 
+            visited[v] = 1; q.push(v); 
+            } 
         }
-    }
-    cout << endl;
-}
-void displayGraph(int graph[MAX][MAX], int n) {
-    cout << "\nAdjacency Matrix:\n";
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++)
-            cout << graph[i][j] << " ";
-        cout << endl;
      }
 }
-int main() {
-    int n;
-    cout << "Enter number of vertices: ";
+int main() { 
+    int adj[MAX][MAX] = {0};
+    int visited[MAX] = {0}; 
+    int n, e; 
+    cout << "Enter number of nodes: "; 
     cin >> n;
-    int graph[MAX][MAX];
-    cout << "Enter adjacency matrix (0 or 1):\n";
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
-            cin >> graph[i][j];
-    displayGraph(graph, n);
-    int start;
-    cout << "Enter starting vertex for BFS: ";
-    cin >> start;
-    bfs(graph, n, start);
-    return 0;
+    cout << "Enter number of edges: ";
+    cin >> e;
+    cout << "Enter edges (u v):\n"; 
+    for (int i = 0; i < e; i++) { 
+        int u, v; 
+        cin >> u >> v; 
+        adj[u][v] = 1;
+        adj[v][u] = 1; // For undirected graph 
+    } 
+    int start; 
+    cout << "Enter starting vertex: "; 
+    cin >> start; 
+    cout << "BFS Traversal: ";
+    bfs(adj, visited, n, start);
+    cout << endl;
+    return 0; 
 }
+
+
